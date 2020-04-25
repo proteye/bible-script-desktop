@@ -1,19 +1,19 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import styles from './Bible.css';
+import styles from './Bible.scss';
 import routes from '../constants/routes.json';
-import { BibleInfo } from '../reducers/bible/types';
+import { BibleState } from '../reducers/bible/types';
 
 type Props = {
-  info: BibleInfo;
+  bible: BibleState;
   readInfo: () => void;
   readBooks: () => void;
   readVersesBy: () => void;
 };
 
 export default function Bible(props: Props) {
-  const { info, readInfo, readBooks, readVersesBy } = props;
-  const infoHtml = info.map(item => {
+  const { bible, readInfo, readBooks, readVersesBy } = props;
+  const infoHtml = bible.info.map(item => {
     return (
       <div key={item.name}>
         {item.name}

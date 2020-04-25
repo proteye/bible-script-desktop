@@ -209,7 +209,7 @@ export default merge.smart(baseConfig, {
     }),
 
     new TypedCssModulesPlugin({
-      globPattern: 'app/**/*.{css,scss,sass}'
+      globPattern: 'app/components/**/*.{css,scss,sass}'
     }),
 
     new webpack.NoEmitOnErrorsPlugin(),
