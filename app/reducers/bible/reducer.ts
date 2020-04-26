@@ -12,21 +12,21 @@ export default createReducer<BibleState>(initState, {
   [types.READ_INFO]: (state, action) => {
     return {
       ...state,
-      info: action.payload
+      info: action.payload ? action.payload : []
     };
   },
 
   [types.READ_BOOKS]: (state, action) => {
     return {
       ...state,
-      books: action.payload
+      books: action.payload ? action.payload : []
     };
   },
 
   [types.READ_VERSES]: (state, action) => {
     return {
       ...state,
-      verses: action.payload
+      verses: action.payload ? action.payload : []
     };
   }
 });

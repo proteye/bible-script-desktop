@@ -1,3 +1,27 @@
-.Layout {
-  margin: 0;
+.main-layout {
+  &__wrapper {
+    @include wrapper();
+  }
+
+  &__row {
+    @include row-flex();
+  }
+
+  &__sidebar {
+    @include col();
+    @include size(4);
+    @include size-md(12);
+
+    height: 100vh;
+    overflow-y: scroll;
+  }
+
+  &__container {
+    @include col();
+    @include size(8);
+    @include size-md(12);
+
+    height: 100vh;
+    overflow-y: scroll;
+  }
 }

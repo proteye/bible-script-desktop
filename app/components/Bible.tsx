@@ -1,66 +1,46 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import styles from './Bible.scss';
-import routes from '../constants/routes.json';
+import React, { useEffect } from 'react';
+// import { Link } from 'react-router-dom';
+// import './Bible.scss';
+// import routes from '../constants/routes.json';
 import { BibleState } from '../reducers/bible/types';
+import MainLayout from './MainLayout';
+import { ReadVersesParams } from '../actions/bible/actions';
 
 type Props = {
   bible: BibleState;
   readInfo: () => void;
   readBooks: () => void;
-  readVersesBy: () => void;
+  readVersesBy: (params: ReadVersesParams) => void;
 };
 
 export default function Bible(props: Props) {
   const { bible, readInfo, readBooks, readVersesBy } = props;
-  const infoHtml = bible.info.map(item => {
+
+  useEffect(() => {
+    readInfo();
+    readBooks();
+    readVersesBy({ bookNumber: 10, chapter: 1 });
+  }, []);
+
+  const books = bible.books.map(item => {
+    const onClick = () =>
+      readVersesBy({ bookNumber: item.bookNumber, chapter: 1 });
     return (
-      <div key={item.name}>
-        {item.name}
-        <span> - </span>
-        {item.value}
+      <div key={item.shortName}>
+        <button onClick={onClick} data-tclass="btn" type="button">
+          {item.shortName}
+        </button>
       </div>
     );
   });
 
-  return (
-    <div>
-      <div className={styles.backButton} data-tid="backButton">
-        <Link to={routes.HOME}>
-          <i className="fa fa-arrow-left fa-3x" />
-        </Link>
-      </div>
-      <div className={`counter ${styles.info}`} data-tid="info">
-        {infoHtml}
-      </div>
-      <div className={styles.btnGroup}>
-        <button
-          className={styles.btn}
-          onClick={readInfo}
-          data-tclass="btn"
-          type="button"
-        >
-          INFO
-          <i className="fa fa-plus" />
-        </button>
-        <button
-          className={styles.btn}
-          onClick={readBooks}
-          data-tclass="btn"
-          type="button"
-        >
-          BOOKS
-          <i className="fa fa-plus" />
-        </button>
-        <button
-          className={styles.btn}
-          onClick={readVersesBy}
-          data-tclass="btn"
-          type="button"
-        >
-          VERSES
-        </button>
-      </div>
-    </div>
-  );
+  const verses = bible.verses?.map(item => {
+    return (
+      <div key={item.bookNumber + item.chapter + item.verse}>{item.text}</div>
+    );
+  });
+
+  const sidebar = <div>{books}</div>;
+
+  return <MainLayout sidebar={sidebar}>{verses}</MainLayout>;
 }

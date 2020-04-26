@@ -1,10 +1,21 @@
-import { BibleInfo, Dispatch } from '../../reducers/bible/types';
+import {
+  BibleBooks,
+  BibleInfo,
+  BibleVerses,
+  Dispatch
+} from '../../reducers/bible/types';
 import db from '../../utils/db';
 
 export const types = {
   READ_INFO: Symbol('READ_INFO'),
   READ_BOOKS: Symbol('READ_BOOKS'),
   READ_VERSES: Symbol('READ_VERSES')
+};
+
+export type ReadVersesParams = {
+  bookNumber: number;
+  chapter?: number;
+  verse?: number;
 };
 
 const actions = {
@@ -19,13 +30,32 @@ const actions = {
 
   readBooks: () => {
     return (dispatch: Dispatch) => {
-      dispatch({ type: types.READ_BOOKS });
+      db.all(
+        'SELECT book_number AS bookNumber, short_name AS shortName, long_name AS longName, book_color AS bookColor, is_present AS isPresent FROM books_all',
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (_: any, rows: BibleBooks) => {
+          dispatch({ type: types.READ_BOOKS, payload: rows });
+        }
+      );
     };
   },
 
-  readVersesBy: () => {
+  readVersesBy: (params: ReadVersesParams) => {
     return (dispatch: Dispatch) => {
-      dispatch({ type: types.READ_VERSES });
+      let condition = `book_number = ${params.bookNumber}`;
+      if (params.chapter) {
+        condition += ` AND chapter = ${params.chapter}`;
+      }
+      if (params.verse) {
+        condition += ` AND verse = ${params.verse}`;
+      }
+      db.all(
+        `SELECT book_number AS bookNumber, chapter, verse, text FROM verses WHERE ${condition}`,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        (_: any, rows: BibleVerses) => {
+          dispatch({ type: types.READ_VERSES, payload: rows });
+        }
+      );
     };
   }
 };

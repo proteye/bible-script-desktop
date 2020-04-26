@@ -8,8 +8,8 @@ body {
   position: relative;
   background-color: white;
   color: black;
-  height: 100vh;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  height: 100vh;
   overflow-y: hidden;
 }
 
@@ -20,3 +20,6 @@ select,
 textarea {
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
 }
+
+@import './components/MainLayout';
+@import './components/Bible';
