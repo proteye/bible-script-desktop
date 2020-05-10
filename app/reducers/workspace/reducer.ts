@@ -26,10 +26,17 @@ const initState: WorkspaceState = {
 };
 
 function createWorkspace() {
-  const ws = { ...initState.workspaces[0] };
+  const ws: WorkspaceInfo = { ...initState.workspaces[0] };
   ws.id = uuidv4();
   ws.tabs[0].id = uuidv4();
   return ws;
+}
+
+function createTab() {
+  const tab: TabInfo = { ...INIT_TAB };
+  tab.id = uuidv4();
+  tab.isFocused = true;
+  return tab;
 }
 
 export default createReducer<WorkspaceState>(initState, {
@@ -90,13 +97,15 @@ export default createReducer<WorkspaceState>(initState, {
       return state;
     }
 
+    const tab = createTab();
+
     return {
       ...state,
       workspaces: state.workspaces.map((v: WorkspaceInfo) => {
         if (v.id === action.payload.id) {
           return {
             ...v,
-            tabs: [...v.tabs, action.payload.tab],
+            tabs: [...v.tabs, tab],
             isTabAddDisabled: v.tabs.length === v.maxTabCount
           };
         }

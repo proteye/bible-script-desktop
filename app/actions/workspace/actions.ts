@@ -1,9 +1,4 @@
-import { v4 as uuidv4 } from 'uuid';
-import {
-  TabInfo,
-  WorkspaceInfo,
-  Dispatch
-} from '../../reducers/workspace/types';
+import { Dispatch } from '../../reducers/workspace/types';
 
 export const types = {
   WORKSPACE_ADD: Symbol('WORKSPACE_ADD'),
@@ -17,8 +12,6 @@ export type TabRemoveParams = { id: string; tabId: string };
 const actions = {
   workspaceAdd: () => {
     return (dispatch: Dispatch) => {
-      // const tab: TabInfo = {id: uuidv4(), isFocused: true};
-      // const workspace: WorkspaceInfo = {id: uuidv4(), tabs: [tab]};
       dispatch({ type: types.WORKSPACE_ADD });
     };
   },
@@ -31,8 +24,7 @@ const actions = {
 
   tabAdd: (id: string) => {
     return (dispatch: Dispatch) => {
-      const tab: TabInfo = { id: uuidv4(), isFocused: true };
-      dispatch({ type: types.TAB_ADD, payload: { id, tab } });
+      dispatch({ type: types.TAB_ADD, payload: { id } });
     };
   },
 

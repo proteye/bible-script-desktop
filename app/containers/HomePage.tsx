@@ -1,11 +1,11 @@
 import { bindActionCreators, Dispatch } from 'redux';
 import { connect } from 'react-redux';
-import React, { ReactNode, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { workspace as workspaceActions } from '../actions';
 import { RootState, WorkspaceState } from '../reducers/stateTypes';
 import MainLayout from '../components/MainLayout';
 import Navbar from '../components/Navbar';
-import TabSpace from '../components/TabSpace';
+// import TabSpace from '../components/TabSpace';
 import BiblePage from './BiblePage';
 import { TabRemoveParams } from '../actions/workspace/actions';
 import WorkSpace from '../components/WorkSpace';
@@ -31,10 +31,10 @@ function mapDispatchToProps(dispatch: Dispatch) {
 function HomePage(props: Props) {
   const {
     workspaceState,
-    workspaceAdd,
-    workspaceRemove,
-    tabAdd,
-    tabRemove
+    workspaceAdd
+    // workspaceRemove,
+    // tabAdd,
+    // tabRemove
   } = props;
 
   useEffect(() => {}, []);
