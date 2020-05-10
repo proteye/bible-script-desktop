@@ -6,7 +6,7 @@ import { RootState, WorkspaceState } from '../reducers/stateTypes';
 import MainLayout from '../components/MainLayout';
 import Navbar from '../components/Navbar';
 // import TabSpace from '../components/TabSpace';
-import BiblePage from './BiblePage';
+// import BiblePage from './BiblePage';
 import { TabRemoveParams } from '../actions/workspace/actions';
 import WorkSpace from '../components/WorkSpace';
 
@@ -31,19 +31,28 @@ function mapDispatchToProps(dispatch: Dispatch) {
 function HomePage(props: Props) {
   const {
     workspaceState,
-    workspaceAdd
-    // workspaceRemove,
+    workspaceAdd,
+    workspaceRemove
     // tabAdd,
     // tabRemove
   } = props;
 
   useEffect(() => {}, []);
 
+  // <BiblePage key={tab.id} />
   const workspaces = workspaceState.workspaces.map(workspace => {
     return (
-      <WorkSpace key={workspace.id} workspace={workspace}>
+      <WorkSpace
+        key={workspace.id}
+        workspace={workspace}
+        workspaceRemove={workspaceRemove}
+      >
         {workspace.tabs.map(tab => (
-          <BiblePage key={tab.id} />
+          <div key={tab.id}>
+            {workspace.id}
+            <br />
+            {tab.id}
+          </div>
         ))}
       </WorkSpace>
     );

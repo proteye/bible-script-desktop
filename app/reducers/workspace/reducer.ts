@@ -6,28 +6,29 @@ import createReducer from '../../utils/reducer';
 
 const MAX_WS_COUNT = 4;
 const MAX_TAB_COUNT = 10;
+
 const INIT_TAB = { id: uuidv4(), isFocused: true };
+const INIT_WS = {
+  id: uuidv4(),
+  tabs: [{ ...INIT_TAB }],
+  resizeHandles: [],
+  width: Infinity,
+  height: Infinity,
+  maxTabCount: MAX_TAB_COUNT,
+  isTabAddDisabled: false,
+  isFocused: true
+};
 
 const initState: WorkspaceState = {
-  workspaces: [
-    {
-      id: uuidv4(),
-      tabs: [INIT_TAB],
-      resizeHandles: [],
-      width: Infinity,
-      height: Infinity,
-      maxTabCount: MAX_TAB_COUNT,
-      isTabAddDisabled: false,
-      isFocused: true
-    }
-  ],
+  workspaces: [{ ...INIT_WS }],
   maxCount: MAX_WS_COUNT,
   isAddDisabled: false
 };
 
 function createWorkspace() {
-  const ws: WorkspaceInfo = { ...initState.workspaces[0] };
+  const ws: WorkspaceInfo = { ...INIT_WS };
   ws.id = uuidv4();
+  ws.tabs = [{ ...INIT_TAB }];
   ws.tabs[0].id = uuidv4();
   return ws;
 }
@@ -50,7 +51,7 @@ export default createReducer<WorkspaceState>(initState, {
 
     const win = remote.getCurrentWindow();
     const size = win.getContentSize();
-    const halfWidth = size[0] / 2 - 10;
+    const halfWidth = size[0] / 2;
     const halfHeight = (size[1] - 48) / 2;
 
     switch (workspaces.length) {

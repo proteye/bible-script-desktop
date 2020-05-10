@@ -1,34 +1,32 @@
 .workspace {
-  &__full {
-    @include col();
-    @include size(12);
-
-    height: calc(100vh - 50px);
-    overflow-y: scroll;
+  &__box {
+    display: block;
+    width: 100%;
+    height: 100vh;
+    border: 1px solid #ccc;
+    border-radius: 5px 5px 0 0;
+    box-sizing: border-box;
+    word-wrap: break-word;
   }
 
-  &__half-horizontal {
-    @include col();
-    @include size(6);
-
-    height: calc(100vh - 50px);
-    overflow-y: scroll;
+  &__topbar {
+    height: 26px;
+    width: 100%;
+    background: black;
+    border-radius: 5px 5px 0 0;
+    overflow: hidden;
   }
 
-  &__half-vertical {
-    @include col();
-    @include size(12);
-
-    height: calc((100vh - 50px) / 2);
-    overflow-y: scroll;
+  &__topbar-actions {
+    display: block;
   }
 
-  &__quarter {
-    @include col();
-    @include size(6);
+  &__topbar-actions-button {
+    display: block;
+  }
 
-    height: calc((100vh - 50px) / 2);
-    overflow-y: scroll;
+  &__topbar-actions-icon {
+    color: #fff;
   }
 }
 

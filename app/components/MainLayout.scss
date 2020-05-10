@@ -8,14 +8,11 @@
   }
 
   &__navbar {
-    margin: 0;
+    display: block;
   }
 
   &__container {
-    @include col();
-    @include size(12);
-
-    height: 100vh;
-    overflow-y: scroll;
+    display: flex;
+    flex-wrap: wrap;
   }
 }

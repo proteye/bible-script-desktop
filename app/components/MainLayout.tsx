@@ -13,8 +13,8 @@ export default function MainLayout(props: Props) {
       <div className="main-layout__navbar" data-tid="navbar">
         {navbar}
       </div>
-      <div className="main-layout__wrapper" data-tid="wrapper">
-        <div className="main-layout__row">{children}</div>
+      <div className="main-layout__container" data-tid="container">
+        {children}
       </div>
     </div>
   );
