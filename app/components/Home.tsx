@@ -1,18 +1,47 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import routes from '../constants/routes.json';
-import styles from './Home.css';
+import React, { useEffect } from 'react';
+// import { Link } from 'react-router-dom';
+// import './Bible.scss';
+// import routes from '../constants/routes.json';
+import { BibleState } from '../reducers/bible/types';
+import MainLayout from './MainLayout';
+import Navbar from './Navbar';
+import { ReadVersesParams } from '../actions/bible/actions';
 
-export default function Home() {
-  return (
-    <div className={styles.container} data-tid="container">
-      <h2>Home</h2>
-      <div>
-        <Link to={routes.COUNTER}>to Counter</Link>
+type Props = {
+  bible: BibleState;
+  readInfo: () => void;
+  readBooks: () => void;
+  readVersesBy: (params: ReadVersesParams) => void;
+};
+
+export default function Home(props: Props) {
+  const { bible, readInfo, readBooks, readVersesBy } = props;
+
+  useEffect(() => {
+    readInfo();
+    readBooks();
+    readVersesBy({ bookNumber: 10, chapter: 1 });
+  }, []);
+
+  const books = bible.books.map(item => {
+    const onClick = () =>
+      readVersesBy({ bookNumber: item.bookNumber, chapter: 1 });
+    return (
+      <div key={item.shortName}>
+        <button onClick={onClick} data-tclass="btn" type="button">
+          {item.shortName}
+        </button>
       </div>
-      <div>
-        <Link to={routes.BIBLE}>to Bible</Link>
-      </div>
-    </div>
-  );
+    );
+  });
+
+  const verses = bible.verses?.map(item => {
+    return (
+      <div key={item.bookNumber + item.chapter + item.verse}>{item.text}</div>
+    );
+  });
+
+  const navBar = <Navbar />;
+
+  return <MainLayout navbar={navBar}>{verses}</MainLayout>;
 }

@@ -1,25 +1,19 @@
 .main-layout {
   &__wrapper {
-    @include wrapper();
+    @include wrapper-full();
   }
 
   &__row {
     @include row-flex();
   }
 
-  &__sidebar {
-    @include col();
-    @include size(4);
-    @include size-md(12);
-
-    height: 100vh;
-    overflow-y: scroll;
+  &__navbar {
+    margin: 0;
   }
 
   &__container {
     @include col();
-    @include size(8);
-    @include size-md(12);
+    @include size(12);
 
     height: 100vh;
     overflow-y: scroll;

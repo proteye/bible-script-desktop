@@ -42,5 +42,9 @@ export default function Bible(props: Props) {
 
   const sidebar = <div>{books}</div>;
 
-  return <MainLayout sidebar={sidebar}>{verses}</MainLayout>;
+  return (
+    <div className="bible">
+      <div>{verses}</div>
+    </div>
+  );
 }

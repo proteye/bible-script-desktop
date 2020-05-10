@@ -1,14 +1,20 @@
 @import '~@fortawesome/fontawesome-free/css/all.css';
 
-@mixin font($font-family, $font-file) {
+@mixin font($font-family, $font-file, $font-weight) {
   @font-face {
     font-family: $font-family;
-    src: url($font-file + '.ttf') format('truetype');
-    font-weight: normal;
+    font-display: swap;
     font-style: normal;
+    font-weight: $font-weight;
+    src: local('Roboto Bold '), local('Roboto-Bold'),
+    url($font-file + '.eot');
+    src: url($font-file + '.eot?#iefix') format('embedded-opentype'),
+    url($font-file + '.woff') format('woff'),
+    url($font-file + '.ttf') format('truetype');
   }
 }
 
-@include font('Roboto', './styles/fonts/Roboto-Regular');
-@include font('Roboto-Medium', './styles/fonts/Roboto-Medium');
-@include font('Roboto-Bold', './styles/fonts/Roboto-Bold');
+@include font('Roboto', './styles/fonts/RobotoLight', 300);
+@include font('Roboto', './styles/fonts/RobotoRegular', 400);
+@include font('Roboto', './styles/fonts/RobotoMedium', 500);
+@include font('Roboto', './styles/fonts/RobotoBold', 700);

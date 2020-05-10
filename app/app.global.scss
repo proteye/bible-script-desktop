@@ -1,5 +1,5 @@
 @import 'styles/variables';
-@import 'styles/fonts';
+//@import 'styles/fonts';
 @import 'styles/normalize';
 @import 'styles/smart-grid';
 @import 'styles/mixins';
@@ -9,6 +9,7 @@ body {
   background-color: white;
   color: black;
   font-family: 'Roboto', 'Helvetica Neue', Helvetica, sans-serif;
+  font-weight: normal;
   height: 100vh;
   overflow-y: hidden;
 }
@@ -22,4 +23,9 @@ textarea {
 }
 
 @import './components/MainLayout';
+@import './components/Navbar';
+@import './components/Home';
+@import './components/Settings';
 @import './components/Bible';
+@import './components/WorkSpace';
+@import './components/TabSpace';

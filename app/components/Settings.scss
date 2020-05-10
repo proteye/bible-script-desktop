@@ -1,0 +1,14 @@
+.settings {
+  &__wrapper {
+    @include wrapper-full();
+  }
+
+  &__row {
+    @include row-flex();
+  }
+
+  &__container {
+    @include col();
+    @include size(12);
+  }
+}

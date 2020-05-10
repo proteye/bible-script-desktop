@@ -1,4 +1,7 @@
 .bible {
+  height: #{calc(100vh - #{$navbar_height})};
+  overflow-y: scroll;
+
   &__wrapper {
     @include wrapper();
   }
