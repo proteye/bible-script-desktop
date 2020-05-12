@@ -25,19 +25,18 @@ const initState: WorkspaceState = {
   isAddDisabled: false
 };
 
-function createWorkspace() {
-  const ws: WorkspaceInfo = { ...INIT_WS };
-  ws.id = uuidv4();
-  ws.tabs = [{ ...INIT_TAB }];
-  ws.tabs[0].id = uuidv4();
-  return ws;
-}
-
 function createTab() {
   const tab: TabInfo = { ...INIT_TAB };
   tab.id = uuidv4();
   tab.isFocused = true;
   return tab;
+}
+
+function createWorkspace() {
+  const ws: WorkspaceInfo = { ...INIT_WS };
+  ws.id = uuidv4();
+  ws.tabs = [createTab()];
+  return ws;
 }
 
 export default createReducer<WorkspaceState>(initState, {
@@ -56,17 +55,20 @@ export default createReducer<WorkspaceState>(initState, {
 
     switch (workspaces.length) {
       case 1:
-        workspaces[0] = { ...workspaces[0] };
         workspaces[0].width = halfWidth;
+        workspaces[0].resizeHandles = ['e'];
         workspace.width = halfWidth;
         break;
       case 2:
         workspaces[0].height = halfHeight;
+        workspaces[0].resizeHandles = ['s', 'e', 'se'];
         workspaces[1].height = halfHeight;
+        workspaces[1].resizeHandles = ['s'];
         workspace.height = halfHeight;
         break;
       case 3:
         workspaces[2].width = halfWidth;
+        workspaces[2].resizeHandles = ['e'];
         workspace.width = halfWidth;
         workspace.height = halfHeight;
         break;
