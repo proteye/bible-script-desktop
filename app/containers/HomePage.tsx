@@ -7,13 +7,17 @@ import MainLayout from '../components/MainLayout';
 import Navbar from '../components/Navbar';
 // import TabSpace from '../components/TabSpace';
 // import BiblePage from './BiblePage';
-import { TabRemoveParams } from '../actions/workspace/actions';
+import {
+  TabRemoveParams,
+  WorkspaceChangeParams
+} from '../actions/workspace/actions';
 import WorkSpace from '../components/WorkSpace';
 
 type Props = {
   workspaceState: WorkspaceState;
   workspaceAdd: () => void;
   workspaceRemove: (id: string) => void;
+  workspaceChange: (params: WorkspaceChangeParams) => void;
   tabAdd: (id: string) => void;
   tabRemove: (params: TabRemoveParams) => void;
 };
@@ -32,7 +36,8 @@ function HomePage(props: Props) {
   const {
     workspaceState,
     workspaceAdd,
-    workspaceRemove
+    workspaceRemove,
+    workspaceChange
     // tabAdd,
     // tabRemove
   } = props;
@@ -46,6 +51,7 @@ function HomePage(props: Props) {
         key={workspace.id}
         workspace={workspace}
         workspaceRemove={workspaceRemove}
+        workspaceChange={workspaceChange}
       >
         {workspace.tabs.map(tab => (
           <div key={tab.id}>

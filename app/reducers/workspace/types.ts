@@ -12,6 +12,8 @@ export type WorkspaceInfo = {
   resizeHandles: ResizeHandle[];
   width: number;
   height: number;
+  minConstraints: [number, number];
+  maxConstraints: [number, number];
   maxTabCount: number;
   isTabAddDisabled: boolean;
   isFocused: boolean;

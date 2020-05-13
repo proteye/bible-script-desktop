@@ -8,6 +8,8 @@ import NotesIcon from '@material-ui/icons/Notes';
 import TranslateIcon from '@material-ui/icons/Translate';
 import { WorkspaceState } from '../reducers/workspace/types';
 
+export const NAVBAR_HEIGHT = 48;
+
 type Props = {
   workspaceState: WorkspaceState;
   workspaceAdd: () => void;

@@ -3,17 +3,20 @@ import { v4 as uuidv4 } from 'uuid';
 import { TabInfo, WorkspaceInfo, WorkspaceState } from './types';
 import { types } from '../../actions/workspace/actions';
 import createReducer from '../../utils/reducer';
+import { NAVBAR_HEIGHT } from '../../components/Navbar';
 
 const MAX_WS_COUNT = 4;
 const MAX_TAB_COUNT = 10;
 
-const INIT_TAB = { id: uuidv4(), isFocused: true };
-const INIT_WS = {
+const INIT_TAB: TabInfo = { id: uuidv4(), isFocused: true };
+const INIT_WS: WorkspaceInfo = {
   id: uuidv4(),
   tabs: [{ ...INIT_TAB }],
   resizeHandles: [],
   width: Infinity,
   height: Infinity,
+  minConstraints: [250, 250],
+  maxConstraints: [Infinity, Infinity],
   maxTabCount: MAX_TAB_COUNT,
   isTabAddDisabled: false,
   isFocused: true
@@ -49,26 +52,44 @@ export default createReducer<WorkspaceState>(initState, {
     const workspace = createWorkspace();
 
     const win = remote.getCurrentWindow();
-    const size = win.getContentSize();
-    const halfWidth = size[0] / 2;
-    const halfHeight = (size[1] - 48) / 2;
+    const winSize = win.getContentSize();
+    const width = winSize[0];
+    const height = winSize[1] - NAVBAR_HEIGHT;
+    const halfWidth = width / 2;
+    const halfHeight = height / 2;
 
     switch (workspaces.length) {
       case 1:
         workspaces[0].width = halfWidth;
         workspaces[0].resizeHandles = ['e'];
+        workspaces[0].maxConstraints = [
+          width - workspace.minConstraints[0],
+          Infinity
+        ];
         workspace.width = halfWidth;
         break;
       case 2:
         workspaces[0].height = halfHeight;
         workspaces[0].resizeHandles = ['s', 'e', 'se'];
+        workspaces[0].maxConstraints = [
+          width - workspaces[1].minConstraints[0],
+          height - workspace.minConstraints[1]
+        ];
         workspaces[1].height = halfHeight;
         workspaces[1].resizeHandles = ['s'];
+        workspaces[1].maxConstraints = [
+          workspaces[1].maxConstraints[0],
+          height - workspace.minConstraints[1]
+        ];
         workspace.height = halfHeight;
         break;
       case 3:
         workspaces[2].width = halfWidth;
         workspaces[2].resizeHandles = ['e'];
+        workspaces[2].maxConstraints = [
+          width - workspace.minConstraints[0],
+          height - workspaces[1].minConstraints[1]
+        ];
         workspace.width = halfWidth;
         workspace.height = halfHeight;
         break;
@@ -90,6 +111,69 @@ export default createReducer<WorkspaceState>(initState, {
       workspaces: state.workspaces.filter(
         (v: WorkspaceInfo) => v.id !== action.payload.id
       ),
+      isAddDisabled: state.workspaces.length - 1 === state.maxCount
+    };
+  },
+
+  [types.WORKSPACE_CHANGE]: (state, action) => {
+    const workspaceIndex: number = state.workspaces.findIndex(
+      v => v.id === action.payload.id
+    );
+    if (workspaceIndex === -1) {
+      return state;
+    }
+
+    const currWorkspace = {
+      ...state.workspaces[workspaceIndex],
+      width: action.payload.width,
+      height: action.payload.height
+    };
+
+    const win = remote.getCurrentWindow();
+    const winSize = win.getContentSize();
+    const width = winSize[0];
+    const height = winSize[1] - NAVBAR_HEIGHT;
+
+    return {
+      ...state,
+      workspaces: state.workspaces.map((v: WorkspaceInfo, i: number) => {
+        const ws = { ...v };
+        if (ws.id === currWorkspace.id) {
+          return currWorkspace;
+        }
+        switch (i) {
+          case 0:
+            if (workspaceIndex === 1) {
+              ws.height = currWorkspace.height;
+              break;
+            }
+            ws.width = currWorkspace.width;
+            break;
+          case 1:
+            if (workspaceIndex === 0) {
+              ws.height = currWorkspace.height;
+            }
+            ws.width = width - currWorkspace.width;
+            break;
+          case 2:
+            if (state.workspaces.length > 3 && workspaceIndex !== 1) {
+              ws.width = currWorkspace.width;
+            }
+            ws.height = height - currWorkspace.height;
+            break;
+          case 3:
+            if (workspaceIndex !== 1) {
+              ws.width = width - currWorkspace.width;
+            }
+            if (workspaceIndex < 2) {
+              ws.height = height - currWorkspace.height;
+            }
+            break;
+          default:
+            break;
+        }
+        return ws;
+      }),
       isAddDisabled: state.workspaces.length - 1 === state.maxCount
     };
   },
