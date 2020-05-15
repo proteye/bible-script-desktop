@@ -84,14 +84,14 @@ export default createReducer<WorkspaceState>(initState, {
         workspace.height = halfHeight;
         break;
       case 3:
-        workspaces[2].width = halfWidth;
+        workspaces[2].width = workspaces[0].width;
         workspaces[2].resizeHandles = ['e'];
         workspaces[2].maxConstraints = [
           width - workspace.minConstraints[0],
           height - workspaces[1].minConstraints[1]
         ];
-        workspace.width = halfWidth;
-        workspace.height = halfHeight;
+        workspace.width = workspaces[1].width;
+        workspace.height = workspaces[2].height;
         break;
       default:
         break;
