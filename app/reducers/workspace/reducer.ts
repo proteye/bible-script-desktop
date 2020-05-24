@@ -42,6 +42,55 @@ function createWorkspace() {
   return ws;
 }
 
+function updateResizeHandlesAfterRemove(
+  workspacesInput: WorkspaceInfo[]
+): WorkspaceInfo[] {
+  const workspaces = [...workspacesInput];
+  const win = remote.getCurrentWindow();
+  const winSize = win.getContentSize();
+  const width = winSize[0];
+  const height = winSize[1] - NAVBAR_HEIGHT;
+
+  switch (workspaces.length) {
+    case 1:
+      workspaces[0].width = width;
+      workspaces[0].height = height;
+      workspaces[0].resizeHandles = [];
+      workspaces[0].maxConstraints = [Infinity, Infinity];
+      break;
+    case 2:
+      workspaces[1].width = width - workspaces[0].width;
+      workspaces[1].height = height;
+      workspaces[0].height = height;
+      workspaces[0].resizeHandles = ['e'];
+      workspaces[0].maxConstraints = [
+        width - workspaces[1].minConstraints[0],
+        Infinity
+      ];
+      break;
+    case 3:
+      workspaces[2].width = width;
+      workspaces[2].height = height - workspaces[0].height;
+      workspaces[1].width = width - workspaces[0].width;
+      workspaces[1].height = workspaces[0].height;
+      workspaces[1].resizeHandles = ['s'];
+      workspaces[1].maxConstraints = [
+        workspaces[1].maxConstraints[0],
+        height - workspaces[2].minConstraints[1]
+      ];
+      workspaces[0].resizeHandles = ['s', 'e', 'se'];
+      workspaces[0].maxConstraints = [
+        width - workspaces[1].minConstraints[0],
+        height - workspaces[2].minConstraints[1]
+      ];
+      break;
+    default:
+      break;
+  }
+
+  return workspaces;
+}
+
 export default createReducer<WorkspaceState>(initState, {
   [types.WORKSPACE_ADD]: state => {
     if (state.workspaces.length === state.maxCount) {
@@ -106,11 +155,12 @@ export default createReducer<WorkspaceState>(initState, {
   },
 
   [types.WORKSPACE_REMOVE]: (state, action) => {
+    const workspaces = state.workspaces.filter(
+      (v: WorkspaceInfo) => v.id !== action.payload.id
+    );
     return {
       ...state,
-      workspaces: state.workspaces.filter(
-        (v: WorkspaceInfo) => v.id !== action.payload.id
-      ),
+      workspaces: updateResizeHandlesAfterRemove(workspaces),
       isAddDisabled: state.workspaces.length - 1 === state.maxCount
     };
   },
