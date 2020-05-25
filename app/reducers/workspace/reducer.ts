@@ -19,6 +19,8 @@ const INIT_WS: WorkspaceInfo = {
   maxConstraints: [Infinity, Infinity],
   maxTabCount: MAX_TAB_COUNT,
   isTabAddDisabled: false,
+  selectedTabId: INIT_TAB.id,
+  selectedTabIndex: 0,
   isFocused: true
 };
 
@@ -28,17 +30,20 @@ const initState: WorkspaceState = {
   isAddDisabled: false
 };
 
-function createTab() {
+function createTab(): TabInfo {
   const tab: TabInfo = { ...INIT_TAB };
   tab.id = uuidv4();
   tab.isFocused = true;
   return tab;
 }
 
-function createWorkspace() {
+function createWorkspace(): WorkspaceInfo {
   const ws: WorkspaceInfo = { ...INIT_WS };
+  const tab: TabInfo = createTab();
   ws.id = uuidv4();
-  ws.tabs = [createTab()];
+  ws.tabs = [tab];
+  ws.selectedTabId = tab.id;
+  ws.selectedTabIndex = 0;
   return ws;
 }
 
@@ -262,6 +267,22 @@ export default createReducer<WorkspaceState>(initState, {
               (tab: TabInfo) => tab.id !== action.payload.tabId
             ),
             isTabAddDisabled: v.tabs.length === v.maxTabCount
+          };
+        }
+        return v;
+      })
+    };
+  },
+
+  [types.TAB_SELECT]: (state, action) => {
+    return {
+      ...state,
+      workspaces: state.workspaces.map((v: WorkspaceInfo) => {
+        if (v.id === action.payload.id) {
+          return {
+            ...v,
+            selectedTabId: v.tabs[action.payload.tabIndex].id,
+            selectedTabIndex: action.payload.tabIndex
           };
         }
         return v;

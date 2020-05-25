@@ -16,6 +16,8 @@ export type WorkspaceInfo = {
   maxConstraints: [number, number];
   maxTabCount: number;
   isTabAddDisabled: boolean;
+  selectedTabId: string | null;
+  selectedTabIndex: number | null;
   isFocused: boolean;
 };
 

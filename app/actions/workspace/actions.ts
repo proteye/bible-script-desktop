@@ -5,10 +5,12 @@ export const types = {
   WORKSPACE_REMOVE: Symbol('WORKSPACE_REMOVE'),
   WORKSPACE_CHANGE: Symbol('WORKSPACE_CHANGE'),
   TAB_ADD: Symbol('TAB_ADD'),
-  TAB_REMOVE: Symbol('TAB_REMOVE')
+  TAB_REMOVE: Symbol('TAB_REMOVE'),
+  TAB_SELECT: Symbol('TAB_SELECT')
 };
 
 export type TabRemoveParams = { id: string; tabId: string };
+export type TabSelectParams = { id: string; tabIndex: number };
 export type WorkspaceChangeParams = {
   id: string;
   width: number;
@@ -43,6 +45,12 @@ const actions = {
   tabRemove: (params: TabRemoveParams) => {
     return (dispatch: Dispatch) => {
       dispatch({ type: types.TAB_REMOVE, payload: params });
+    };
+  },
+
+  tabSelect: (params: TabSelectParams) => {
+    return (dispatch: Dispatch) => {
+      dispatch({ type: types.TAB_SELECT, payload: params });
     };
   }
 };

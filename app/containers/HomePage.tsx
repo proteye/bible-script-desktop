@@ -5,13 +5,15 @@ import { workspace as workspaceActions } from '../actions';
 import { RootState, WorkspaceState } from '../reducers/stateTypes';
 import MainLayout from '../components/MainLayout';
 import Navbar from '../components/Navbar';
-// import TabSpace from '../components/TabSpace';
+// import TabPanel from '../components/TabPanel';
 // import BiblePage from './BiblePage';
 import {
   TabRemoveParams,
+  TabSelectParams,
   WorkspaceChangeParams
 } from '../actions/workspace/actions';
 import WorkSpace from '../components/WorkSpace';
+import TabSpace from '../components/TabSpace';
 
 type Props = {
   workspaceState: WorkspaceState;
@@ -20,6 +22,7 @@ type Props = {
   workspaceChange: (params: WorkspaceChangeParams) => void;
   tabAdd: (id: string) => void;
   tabRemove: (params: TabRemoveParams) => void;
+  tabSelect: (params: TabSelectParams) => void;
 };
 
 function mapStateToProps(state: RootState) {
@@ -37,9 +40,10 @@ function HomePage(props: Props) {
     workspaceState,
     workspaceAdd,
     workspaceRemove,
-    workspaceChange
-    // tabAdd,
-    // tabRemove
+    workspaceChange,
+    tabAdd,
+    tabRemove,
+    tabSelect
   } = props;
 
   useEffect(() => {}, []);
@@ -53,13 +57,15 @@ function HomePage(props: Props) {
         workspaceRemove={workspaceRemove}
         workspaceChange={workspaceChange}
       >
-        {workspace.tabs.map(tab => (
-          <div key={tab.id}>
-            {workspace.id}
-            <br />
-            {tab.id}
-          </div>
-        ))}
+        <TabSpace
+          tabs={workspace.tabs}
+          workspaceId={workspace.id}
+          selectedTabId={workspace.selectedTabId}
+          selectedTabIndex={workspace.selectedTabIndex}
+          tabAdd={tabAdd}
+          tabRemove={tabRemove}
+          tabSelect={tabSelect}
+        />
       </WorkSpace>
     );
   });
