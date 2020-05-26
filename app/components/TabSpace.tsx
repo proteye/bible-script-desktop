@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import React, { ReactNode, UIEvent } from 'react';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -33,10 +33,10 @@ function tabProps(id: string) {
 interface StyledTabsProps {
   value: number | null;
   onChange: (event: React.ChangeEvent<{}>, newValue: number) => void;
-  indicatorColor?: string;
-  textColor?: string;
-  variant?: string;
-  scrollButtons?: string;
+  indicatorColor?: string | undefined;
+  textColor?: string | undefined;
+  variant?: string | undefined;
+  scrollButtons?: string | undefined;
 }
 
 const StyledTabs = withStyles(() =>
@@ -81,10 +81,17 @@ export default function TabSpace(props: Props) {
     children
   } = props;
 
+  const onTabRemove = (params: { id: string; tabId: string }) => (
+    e: UIEvent
+  ) => {
+    e.stopPropagation();
+    tabRemove({ id: params.id, tabId: params.tabId });
+  };
+
   const tabLabel = (tab: TabInfo, index: number) => (
     <div>
       <span>{`Tab ${index + 1}`}</span>
-      <IconButton onClick={() => tabRemove({ id: workspaceId, tabId: tab.id })}>
+      <IconButton onClick={onTabRemove({ id: workspaceId, tabId: tab.id })}>
         <CloseIcon fontSize="small" />
       </IconButton>
     </div>

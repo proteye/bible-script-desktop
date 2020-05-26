@@ -248,6 +248,8 @@ export default createReducer<WorkspaceState>(initState, {
           return {
             ...v,
             tabs: [...v.tabs, tab],
+            selectedTabIndex: v.tabs.length,
+            selectedTabId: tab.id,
             isTabAddDisabled: v.tabs.length === v.maxTabCount
           };
         }
@@ -261,11 +263,18 @@ export default createReducer<WorkspaceState>(initState, {
       ...state,
       workspaces: state.workspaces.map((v: WorkspaceInfo) => {
         if (v.id === action.payload.id) {
+          const len = v.tabs.length - 1;
+          const prevTabIndex = v.selectedTabIndex || 0;
+          const selectedTabIndex =
+            len > 0 && prevTabIndex > len - 1 ? len - 1 : prevTabIndex;
+
           return {
             ...v,
             tabs: v.tabs.filter(
               (tab: TabInfo) => tab.id !== action.payload.tabId
             ),
+            selectedTabIndex,
+            selectedTabId: len > 0 ? v.tabs[selectedTabIndex].id : null,
             isTabAddDisabled: v.tabs.length === v.maxTabCount
           };
         }
