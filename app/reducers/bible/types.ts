@@ -1,16 +1,16 @@
 import { Dispatch as ReduxDispatch, AnyAction } from 'redux';
 
-export type BibleInfo = { name: string; value: string }[];
+export type BibleInfo = { name: string; value: string };
 
-export type BibleBooks = {
+export type BibleBook = {
   bookNumber: number;
   shortName: string;
   longName: string;
   bookColor: string;
   isPresent: boolean;
-}[];
+};
 
-export type BibleVerses = {
+export type BibleVerse = {
   bookNumber: number;
   chapter: number;
   verse: number;
@@ -19,8 +19,8 @@ export type BibleVerses = {
 
 export interface BibleState {
   info: BibleInfo;
-  books: BibleBooks;
-  verses: BibleVerses;
+  books: BibleBook[];
+  verses: BibleVerse[];
 }
 
 export type Dispatch = ReduxDispatch<AnyAction>;

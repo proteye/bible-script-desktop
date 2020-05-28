@@ -8,7 +8,11 @@ import { createStyles, Theme } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { TabInfo } from '../reducers/workspace/types';
-import { TabRemoveParams, TabSelectParams } from '../actions/workspace/actions';
+import {
+  TabAddParams,
+  TabRemoveParams,
+  TabSelectParams
+} from '../actions/workspace/actions';
 import TabPanel from './TabPanel';
 
 type Props = {
@@ -16,7 +20,7 @@ type Props = {
   workspaceId: string;
   selectedTabId: string | null;
   selectedTabIndex: number | null;
-  tabAdd: (id: string) => void;
+  tabAdd: (params: TabAddParams) => void;
   tabRemove: (params: TabRemoveParams) => void;
   tabSelect: (params: TabSelectParams) => void;
   children?: ReactNode;
@@ -88,9 +92,9 @@ export default function TabSpace(props: Props) {
     tabRemove({ id: params.id, tabId: params.tabId });
   };
 
-  const tabLabel = (tab: TabInfo, index: number) => (
+  const tabLabel = (tab: TabInfo, _index: number) => (
     <div>
-      <span>{`Tab ${index + 1}`}</span>
+      <span>{tab.title}</span>
       <IconButton onClick={onTabRemove({ id: workspaceId, tabId: tab.id })}>
         <CloseIcon fontSize="small" />
       </IconButton>
@@ -104,7 +108,7 @@ export default function TabSpace(props: Props) {
           value={selectedTabIndex}
           onChange={(_e, index: number) => {
             if (index === tabs.length) {
-              tabAdd(workspaceId);
+              tabAdd({ id: workspaceId });
               return;
             }
             tabSelect({ id: workspaceId, tabIndex: index });

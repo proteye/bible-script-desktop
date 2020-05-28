@@ -1,4 +1,4 @@
-import { Dispatch } from '../../reducers/workspace/types';
+import { BookInfo, Dispatch } from '../../reducers/workspace/types';
 
 export const types = {
   WORKSPACE_ADD: Symbol('WORKSPACE_ADD'),
@@ -9,6 +9,11 @@ export const types = {
   TAB_SELECT: Symbol('TAB_SELECT')
 };
 
+export type TabAddParams = {
+  id: string;
+  book?: BookInfo;
+  title?: string;
+};
 export type TabRemoveParams = { id: string; tabId: string };
 export type TabSelectParams = { id: string; tabIndex: number };
 export type WorkspaceChangeParams = {
@@ -36,9 +41,9 @@ const actions = {
     };
   },
 
-  tabAdd: (id: string) => {
+  tabAdd: (params: TabAddParams) => {
     return (dispatch: Dispatch) => {
-      dispatch({ type: types.TAB_ADD, payload: { id } });
+      dispatch({ type: types.TAB_ADD, payload: params });
     };
   },
 

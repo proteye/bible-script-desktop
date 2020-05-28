@@ -1,7 +1,7 @@
 import {
-  BibleBooks,
+  BibleBook,
   BibleInfo,
-  BibleVerses,
+  BibleVerse,
   Dispatch
 } from '../../reducers/bible/types';
 import db from '../../utils/db';
@@ -33,7 +33,7 @@ const actions = {
       db.all(
         'SELECT book_number AS bookNumber, short_name AS shortName, long_name AS longName, book_color AS bookColor, is_present AS isPresent FROM books_all',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (_: any, rows: BibleBooks) => {
+        (_: any, rows: BibleBook[]) => {
           dispatch({ type: types.READ_BOOKS, payload: rows });
         }
       );
@@ -52,7 +52,7 @@ const actions = {
       db.all(
         `SELECT book_number AS bookNumber, chapter, verse, text FROM verses WHERE ${condition}`,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (_: any, rows: BibleVerses) => {
+        (_: any, rows: BibleVerse[]) => {
           dispatch({ type: types.READ_VERSES, payload: rows });
         }
       );

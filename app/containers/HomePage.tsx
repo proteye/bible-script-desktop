@@ -8,6 +8,7 @@ import Navbar from '../components/Navbar';
 // import TabPanel from '../components/TabPanel';
 // import BiblePage from './BiblePage';
 import {
+  TabAddParams,
   TabRemoveParams,
   TabSelectParams,
   WorkspaceChangeParams
@@ -20,7 +21,7 @@ type Props = {
   workspaceAdd: () => void;
   workspaceRemove: (id: string) => void;
   workspaceChange: (params: WorkspaceChangeParams) => void;
-  tabAdd: (id: string) => void;
+  tabAdd: (params: TabAddParams) => void;
   tabRemove: (params: TabRemoveParams) => void;
   tabSelect: (params: TabSelectParams) => void;
 };

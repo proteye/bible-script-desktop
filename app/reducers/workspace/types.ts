@@ -1,8 +1,22 @@
 import { Dispatch as ReduxDispatch, AnyAction } from 'redux';
 import { ResizeHandle } from 'react-resizable';
 
+export enum BookType {
+  bible,
+  commentary,
+  dictionary
+}
+
+export type BookInfo = {
+  id: string;
+  type: BookType;
+  name: string;
+};
+
 export type TabInfo = {
   id: string;
+  book: BookInfo | null;
+  title: string;
   isFocused: boolean;
 };
 

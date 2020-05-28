@@ -1,14 +1,20 @@
 import { remote } from 'electron';
 import { v4 as uuidv4 } from 'uuid';
 import { TabInfo, WorkspaceInfo, WorkspaceState } from './types';
-import { types } from '../../actions/workspace/actions';
+import { TabAddParams, types } from '../../actions/workspace/actions';
 import createReducer from '../../utils/reducer';
 import { NAVBAR_HEIGHT } from '../../components/Navbar';
 
 const MAX_WS_COUNT = 4;
 const MAX_TAB_COUNT = 10;
 
-const INIT_TAB: TabInfo = { id: uuidv4(), isFocused: true };
+const INIT_TAB: TabInfo = {
+  id: uuidv4(),
+  book: null,
+  title: 'Empty',
+  isFocused: true
+};
+
 const INIT_WS: WorkspaceInfo = {
   id: uuidv4(),
   tabs: [{ ...INIT_TAB }],
@@ -30,10 +36,12 @@ const initState: WorkspaceState = {
   isAddDisabled: false
 };
 
-function createTab(): TabInfo {
+function createTab(params?: TabAddParams): TabInfo {
   const tab: TabInfo = { ...INIT_TAB };
   tab.id = uuidv4();
   tab.isFocused = true;
+  tab.book = params && params.book ? params.book : null;
+  tab.title = params && params.title ? params.title : 'Empty';
   return tab;
 }
 
@@ -239,7 +247,7 @@ export default createReducer<WorkspaceState>(initState, {
       return state;
     }
 
-    const tab = createTab();
+    const tab = createTab(action.payload);
 
     return {
       ...state,
